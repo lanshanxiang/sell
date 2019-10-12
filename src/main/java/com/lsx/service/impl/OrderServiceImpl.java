@@ -1,5 +1,6 @@
 package com.lsx.service.impl;
 
+import com.lsx.converter.OrderMaster2OrderDTOConverter;
 import com.lsx.dto.CartDTO;
 import com.lsx.dto.OrderDTO;
 import com.lsx.enums.OrderStatusEnum;
@@ -110,7 +111,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDTO findOne(String orderId) {
 
-       /* OrderMaster orderMaster = orderMasterRepository.findOne(orderId);
+       OrderMaster orderMaster = orderMasterRepository.findById(orderId).get();
         if (orderMaster == null) {
             throw new SellException(ResultEnum.ORDER_NOT_EXIST);
         }
@@ -124,18 +125,17 @@ public class OrderServiceImpl implements OrderService {
         BeanUtils.copyProperties(orderMaster, orderDTO);
         orderDTO.setOrderDetailList(orderDetailList);
 
-        return orderDTO;*/
-        return null;
+        return orderDTO;
+
     }
 
     @Override
     public Page<OrderDTO> findList(String buyerOpenid, Pageable pageable) {
-       /* Page<OrderMaster> orderMasterPage = orderMasterRepository.findByBuyerOpenid(buyerOpenid, pageable);
+        Page<OrderMaster> orderMasterPage = orderMasterRepository.findByBuyerOpenid(buyerOpenid, pageable);
 
         List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(orderMasterPage.getContent());
 
-        return new PageImpl<OrderDTO>(orderDTOList, pageable, orderMasterPage.getTotalElements());*/
-        return null;
+        return new PageImpl<OrderDTO>(orderDTOList, pageable, orderMasterPage.getTotalElements());
     }
 
     @Override
