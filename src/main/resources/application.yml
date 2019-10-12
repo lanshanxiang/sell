@@ -1,0 +1,13 @@
+
+# 配置数据源
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    username: sell
+    password: root
+    url: jdbc:mysql://101.132.226.168:3307/sell?characterEncoding=utf-8&useSSL=false
+  jpa:
+    show-sql: true
+server:
+  servlet:
+    context-path: /sell
