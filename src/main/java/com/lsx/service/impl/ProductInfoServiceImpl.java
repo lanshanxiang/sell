@@ -29,9 +29,8 @@ public class ProductInfoServiceImpl implements ProductInfoService {
     private ProductInfoRepository productInfoRepository;
 
     @Override
-    public ProductInfo findById(String productId) {
-        Optional<ProductInfo> optional = productInfoRepository.findById(productId);
-        ProductInfo productInfo = optional.get();
+    public ProductInfo findOne(String productId) {
+        ProductInfo productInfo = productInfoRepository.findOne(productId);
         return productInfo;
     }
 
@@ -50,8 +49,19 @@ public class ProductInfoServiceImpl implements ProductInfoService {
         return productInfoRepository.save(productInfo);
     }
 
+
     @Override
     public void increaseStock(List<CartDTO> cartDTOList) {
+        for (CartDTO cartDTO: cartDTOList) {
+            ProductInfo productInfo = productInfoRepository.findOne(cartDTO.getProductId());
+            if (productInfo == null){
+                throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+            }
+            Integer result = productInfo.getProductStock() + cartDTO.getProductQuantity();
+
+            productInfo.setProductStock(result);
+            productInfoRepository.save(productInfo);
+        }
 
     }
 
@@ -59,7 +69,7 @@ public class ProductInfoServiceImpl implements ProductInfoService {
     @Transactional
     public void decreaseStock(List<CartDTO> cartDTOList) {
         for (CartDTO cartDTO: cartDTOList) {
-           ProductInfo productInfo = productInfoRepository.findById(cartDTO.getProductId()).get();
+           ProductInfo productInfo = productInfoRepository.findOne(cartDTO.getProductId());
            if (productInfo == null){
                throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
            }
@@ -72,4 +82,25 @@ public class ProductInfoServiceImpl implements ProductInfoService {
 
         }
     }
+
+    @Override
+    public ProductInfo onSale(String productId) {
+        ProductInfo productInfo = productInfoRepository.findOne(productId);
+        if (productInfo == null) {
+            throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+        }
+        if (productInfo.getProductStatusEnum() == ProductStatusEnum.UP) {
+            throw new SellException(ResultEnum.PRODUCT_STATUS_ERROR);
+        }
+        //更新
+        productInfo.setProductStatus(ProductStatusEnum.UP.getCode());
+        return productInfoRepository.save(productInfo);
+    }
+
+    @Override
+    public ProductInfo offSale(String productId) {
+        return null;
+    }
+
+
 }

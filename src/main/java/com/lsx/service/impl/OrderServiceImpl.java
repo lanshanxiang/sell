@@ -13,6 +13,7 @@ import com.lsx.pojo.ProductInfo;
 import com.lsx.repository.OrderDetailRepository;
 import com.lsx.repository.OrderMasterRepository;
 import com.lsx.service.OrderService;
+import com.lsx.service.PayService;
 import com.lsx.service.ProductInfoService;
 import com.lsx.utils.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -50,8 +51,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderMasterRepository orderMasterRepository;
 
-    //@Autowired
-    //private PayService payService;
+    @Autowired
+    private PayService payService;
 
     //@Autowired
     //private PushMessageService pushMessageService;
@@ -59,6 +60,11 @@ public class OrderServiceImpl implements OrderService {
     //@Autowired
     //private WebSocket webSocket;
 
+    /**
+     * 买家创建订单
+     * @param orderDTO
+     * @return
+     */
     @Override
     @Transactional
     public OrderDTO create(OrderDTO orderDTO) {
@@ -68,7 +74,7 @@ public class OrderServiceImpl implements OrderService {
 
         //1. 查询商品（数量, 价格）
         for (OrderDetail orderDetail: orderDTO.getOrderDetailList()) {
-            ProductInfo productInfo =  productInfoService.findById(orderDetail.getProductId());
+            ProductInfo productInfo =  productInfoService.findOne(orderDetail.getProductId());
             if (productInfo == null) {
                 throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
             }
@@ -108,10 +114,15 @@ public class OrderServiceImpl implements OrderService {
         return orderDTO;
     }
 
+    /**
+     * 买家查找订单
+     * @param orderId
+     * @return
+     */
     @Override
     public OrderDTO findOne(String orderId) {
 
-       OrderMaster orderMaster = orderMasterRepository.findById(orderId).get();
+       OrderMaster orderMaster = orderMasterRepository.findOne(orderId);
         if (orderMaster == null) {
             throw new SellException(ResultEnum.ORDER_NOT_EXIST);
         }
@@ -129,6 +140,12 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    /**
+     * 买家查询订单列表
+     * @param buyerOpenid
+     * @param pageable
+     * @return
+     */
     @Override
     public Page<OrderDTO> findList(String buyerOpenid, Pageable pageable) {
         Page<OrderMaster> orderMasterPage = orderMasterRepository.findByBuyerOpenid(buyerOpenid, pageable);
@@ -138,10 +155,15 @@ public class OrderServiceImpl implements OrderService {
         return new PageImpl<OrderDTO>(orderDTOList, pageable, orderMasterPage.getTotalElements());
     }
 
+    /**
+     * 买家取消订单
+     * @param orderDTO
+     * @return
+     */
     @Override
     @Transactional
     public OrderDTO cancel(OrderDTO orderDTO) {
-      /*  OrderMaster orderMaster = new OrderMaster();
+      OrderMaster orderMaster = new OrderMaster();
 
         //判断订单状态
         if (!orderDTO.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
@@ -166,22 +188,27 @@ public class OrderServiceImpl implements OrderService {
         List<CartDTO> cartDTOList = orderDTO.getOrderDetailList().stream()
                 .map(e -> new CartDTO(e.getProductId(), e.getProductQuantity()))
                 .collect(Collectors.toList());
-        productService.increaseStock(cartDTOList);
+        productInfoService.increaseStock(cartDTOList);
 
         //如果已支付, 需要退款
         if (orderDTO.getPayStatus().equals(PayStatusEnum.SUCCESS.getCode())) {
+
             payService.refund(orderDTO);
         }
 
-        return orderDTO;*/
-        return null;
+        return orderDTO;
     }
 
+    /**
+     *买家订单完结
+     * @param orderDTO
+     * @return
+     */
     @Override
     @Transactional
     public OrderDTO finish(OrderDTO orderDTO) {
         //判断订单状态
-      /*  if (!orderDTO.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
+        if (!orderDTO.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
             log.error("【完结订单】订单状态不正确, orderId={}, orderStatus={}", orderDTO.getOrderId(), orderDTO.getOrderStatus());
             throw new SellException(ResultEnum.ORDER_STATUS_ERROR);
         }
@@ -196,18 +223,23 @@ public class OrderServiceImpl implements OrderService {
             throw new SellException(ResultEnum.ORDER_UPDATE_FAIL);
         }
 
+        //TODO
         //推送微信模版消息
-        pushMessageService.orderStatus(orderDTO);
+        //pushMessageService.orderStatus(orderDTO);
 
-        return orderDTO;*/
-        return null;
+        return orderDTO;
     }
 
+    /**
+     * 买家订单支付
+     * @param orderDTO
+     * @return
+     */
     @Override
     @Transactional
     public OrderDTO paid(OrderDTO orderDTO) {
         //判断订单状态
-      /*  if (!orderDTO.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
+        if (!orderDTO.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
             log.error("【订单支付完成】订单状态不正确, orderId={}, orderStatus={}", orderDTO.getOrderId(), orderDTO.getOrderStatus());
             throw new SellException(ResultEnum.ORDER_STATUS_ERROR);
         }
@@ -228,17 +260,15 @@ public class OrderServiceImpl implements OrderService {
             throw new SellException(ResultEnum.ORDER_UPDATE_FAIL);
         }
 
-        return orderDTO;*/
-      return null;
+        return orderDTO;
     }
 
     @Override
     public Page<OrderDTO> findList(Pageable pageable) {
-       /* Page<OrderMaster> orderMasterPage = orderMasterRepository.findAll(pageable);
+        Page<OrderMaster> orderMasterPage = orderMasterRepository.findAll(pageable);
 
         List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(orderMasterPage.getContent());
 
-        return new PageImpl<>(orderDTOList, pageable, orderMasterPage.getTotalElements());*/
-       return null;
+        return new PageImpl<>(orderDTOList, pageable, orderMasterPage.getTotalElements());
     }
 }

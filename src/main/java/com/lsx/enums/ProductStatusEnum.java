@@ -2,6 +2,7 @@ package com.lsx.enums;
 
 import lombok.Getter;
 
+
 /**
  * @ClassName ProductStatusEnum
  * @Author lanshanxiang
@@ -9,7 +10,7 @@ import lombok.Getter;
  * @Version V1.0
  **/
 @Getter
-public enum ProductStatusEnum {
+public enum ProductStatusEnum implements CodeEnum {
     UP(0, "在架"),
     DOWN(1, "下架");
 

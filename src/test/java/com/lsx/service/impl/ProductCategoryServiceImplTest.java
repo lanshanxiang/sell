@@ -18,7 +18,7 @@ public class ProductCategoryServiceImplTest {
 
     @Test
     public void findById() {
-        ProductCategory productCategory = productCategoryService.findById(1);
+        ProductCategory productCategory = productCategoryService.findOne(1);
 
     }
 

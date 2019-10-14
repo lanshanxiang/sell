@@ -19,7 +19,7 @@ import java.util.Optional;
 public interface ProductInfoService {
 
     //查询一条记录
-    ProductInfo findById(String productId);
+    ProductInfo findOne(String productId);
 
     //查询所有在架商品列表
     List<ProductInfo> findUpAll();
@@ -37,10 +37,10 @@ public interface ProductInfoService {
     void decreaseStock(List<CartDTO> cartDTOList);
 
     //上架
-    //ProductInfo onSale(String productId);
+    ProductInfo onSale(String productId);
 
     //下架
-    //ProductInfo offSale(String productId);
+    ProductInfo offSale(String productId);
 
 
 }

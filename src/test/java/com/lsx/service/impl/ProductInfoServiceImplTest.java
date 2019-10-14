@@ -23,7 +23,7 @@ public class ProductInfoServiceImplTest {
 
     @Test
     public void findById() {
-        ProductInfo byId = productInfoService.findById("123456");
+        ProductInfo byId = productInfoService.findOne("123456");
         System.out.println(byId);
     }
 
@@ -35,7 +35,7 @@ public class ProductInfoServiceImplTest {
 
     @Test
     public void findAll() {
-        PageRequest pageRequest = PageRequest.of(0, 2);
+        PageRequest pageRequest = new PageRequest(0,2);
         Page<ProductInfo> all = productInfoService.findAll(pageRequest);
         all.forEach(x -> System.out.println(x));
     }

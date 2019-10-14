@@ -8,6 +8,20 @@ spring:
     url: jdbc:mysql://101.132.226.168:3307/sell?characterEncoding=utf-8&useSSL=false
   jpa:
     show-sql: true
+  jackson:
+    default-property-inclusion: non_null
 server:
-  servlet:
-    context-path: /sell
+  context-path: /sell
+
+wechat:
+  mpAppId: wx446049e6708fb347
+  mpAppSecret: e1e7650643682162449da9d2c8272959
+  mchId:
+  mchKey:
+  keyPath:
+  notifyUrl: http://sell.natapp4.cc/sell/pay/notify
+
+projectUrl:
+  wechatMpAuthorize: http://lanshanxiang.nat300.top
+  wechatOpenAuthorize: http://lanshanxiang.nat300.top
+  sell: http://lanshanxiang.nat300.top
