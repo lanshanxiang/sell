@@ -15,6 +15,7 @@ import com.lsx.repository.OrderMasterRepository;
 import com.lsx.service.OrderService;
 import com.lsx.service.PayService;
 import com.lsx.service.ProductInfoService;
+import com.lsx.service.PushMessageService;
 import com.lsx.utils.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -54,8 +55,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private PayService payService;
 
-    //@Autowired
-    //private PushMessageService pushMessageService;
+    @Autowired
+    private PushMessageService pushMessageService;
 
     //@Autowired
     //private WebSocket webSocket;
@@ -223,9 +224,8 @@ public class OrderServiceImpl implements OrderService {
             throw new SellException(ResultEnum.ORDER_UPDATE_FAIL);
         }
 
-        //TODO
         //推送微信模版消息
-        //pushMessageService.orderStatus(orderDTO);
+        pushMessageService.orderStatus(orderDTO);
 
         return orderDTO;
     }

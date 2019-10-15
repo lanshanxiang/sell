@@ -30,8 +30,9 @@ wechat:
   #证书位置
   keyPath:
   notifyUrl: http://sell.natapp4.cc/sell/pay/notify
+  #微信模板消息通知的模板Id  可配置多个
   templateId:
-    orderStatus:
+    orderStatus: N-RuBibOhMOn5FQyxdgDL-8DZ85NFZ1_wVqm5YRf850
 
 projectUrl:
   wechatMpAuthorize: http://lanshanxiang.nat300.top

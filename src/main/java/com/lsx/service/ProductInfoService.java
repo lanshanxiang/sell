@@ -1,13 +1,12 @@
 package com.lsx.service;
 
 import com.lsx.dto.CartDTO;
-import com.lsx.pojo.ProductCategory;
 import com.lsx.pojo.ProductInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
-import java.util.Optional;
+
 
 /**
  * 商品
