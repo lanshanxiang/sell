@@ -6,6 +6,10 @@ spring:
     username: sell
     password: root
     url: jdbc:mysql://101.132.226.168:3307/sell?characterEncoding=utf-8&useSSL=false
+  redis:
+    host: 101.132.226.168
+    port: 6379
+    password: 111111
   jpa:
     show-sql: true
   jackson:
@@ -14,12 +18,20 @@ server:
   context-path: /sell
 
 wechat:
+  #微信个公众号
   mpAppId: wx446049e6708fb347
   mpAppSecret: e1e7650643682162449da9d2c8272959
+  #微信支付
   mchId:
   mchKey:
+  #微信开放平台
+  openAppId:
+  openAppSecret:
+  #证书位置
   keyPath:
   notifyUrl: http://sell.natapp4.cc/sell/pay/notify
+  templateId:
+    orderStatus:
 
 projectUrl:
   wechatMpAuthorize: http://lanshanxiang.nat300.top

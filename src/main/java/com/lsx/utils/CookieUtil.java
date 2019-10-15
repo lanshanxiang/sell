@@ -7,13 +7,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @ClassName SellerOrderController
+ * Cookie工具
+ * @ClassName CookieUtil
  * @Author lanshanxiang
  * @Date 2019/10/14 18:16
  * @Version V1.0
  **/
 public class CookieUtil {
-
     /**
      * 设置
      * @param response
