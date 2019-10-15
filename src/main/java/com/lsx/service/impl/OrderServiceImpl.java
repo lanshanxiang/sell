@@ -12,10 +12,7 @@ import com.lsx.pojo.OrderMaster;
 import com.lsx.pojo.ProductInfo;
 import com.lsx.repository.OrderDetailRepository;
 import com.lsx.repository.OrderMasterRepository;
-import com.lsx.service.OrderService;
-import com.lsx.service.PayService;
-import com.lsx.service.ProductInfoService;
-import com.lsx.service.PushMessageService;
+import com.lsx.service.*;
 import com.lsx.utils.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -58,8 +55,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private PushMessageService pushMessageService;
 
-    //@Autowired
-    //private WebSocket webSocket;
+    @Autowired
+    private WebSocket webSocket;
 
     /**
      * 买家创建订单
@@ -110,7 +107,7 @@ public class OrderServiceImpl implements OrderService {
         productInfoService.decreaseStock(cartDTOList);
 
         //发送websocket消息
-       // webSocket.sendMessage(orderDTO.getOrderId());
+        webSocket.sendMessage(orderDTO.getOrderId());
 
         return orderDTO;
     }
