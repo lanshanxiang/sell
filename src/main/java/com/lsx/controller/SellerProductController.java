@@ -9,6 +9,10 @@ import com.lsx.service.ProductInfoService;
 import com.lsx.utils.KeyUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -33,6 +37,7 @@ import java.util.Map;
  **/
 @Controller
 @RequestMapping("/seller/product")
+//@CacheConfig(cacheNames = "Product")
 public class SellerProductController {
     @Autowired
     private ProductInfoService productService;
@@ -48,6 +53,7 @@ public class SellerProductController {
      - @return
      */
     @GetMapping("/list")
+    //@Cacheable(cacheNames = "Product" , key = "123", condition = "#size.length() > 3")
     public ModelAndView list(@RequestParam(value = "page", defaultValue = "1") Integer page,
                              @RequestParam(value = "size", defaultValue = "10") Integer size,
                              Map<String, Object> map) {
@@ -120,6 +126,8 @@ public class SellerProductController {
      - @param map
      - @return
      */
+    //@CachePut(cacheNames = "Product",key = "123")
+    //@CacheEvict(cacheNames = "Product",key = "123")
     @PostMapping("/save")
     public ModelAndView save(@Valid ProductForm form,
                              BindingResult bindingResult,
